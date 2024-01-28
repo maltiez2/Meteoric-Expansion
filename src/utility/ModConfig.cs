@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Vintagestory.API.Common;
+﻿using Vintagestory.API.Common;
 
 namespace MeteoricExpansion.Utility
 {
     class ModConfig
     {
         private MeteoricExpansionConfig config;
+        private const string configFile = "MeteoricExpansionConfig.json";
 
         public void ReadConfig(ICoreAPI api)
         {
@@ -33,6 +29,16 @@ namespace MeteoricExpansion.Utility
                 config = LoadConfig(api);
             }
 
+            Apply(api);
+        }
+        public void SaveAndApply(ICoreAPI api)
+        {
+            api.StoreModConfig(config, configFile);
+
+            Apply(api);
+        }
+        public void Apply(ICoreAPI api)
+        {
             api.World.Config.SetBool("Destructive", config.Destructive);
             api.World.Config.SetBool("ClaimsProtected", config.ClaimsProtected);
             api.World.Config.SetBool("DisableFallingMeteors", config.DisableFallingMeteors);
@@ -64,17 +70,18 @@ namespace MeteoricExpansion.Utility
             api.World.Config.SetInt("MaximumShowerDurationInMinutes", config.MaximumShowerDurationInMinutes);
             api.World.Config.SetInt("MaxMeteorsPerShower", config.MaxMeteorsPerShower);
         }
+        public void Edit(string id) => config.Edit(id);
         private MeteoricExpansionConfig LoadConfig(ICoreAPI api)
         {
-            return api.LoadModConfig<MeteoricExpansionConfig>("MeteoricExpansionConfig.json");
+            return api.LoadModConfig<MeteoricExpansionConfig>(configFile);
         }
         private void GenerateConfig(ICoreAPI api)
         {
-            api.StoreModConfig<MeteoricExpansionConfig>(new MeteoricExpansionConfig(), "MeteoricExpansionConfig.json");
+            api.StoreModConfig(new MeteoricExpansionConfig(), configFile);
         }
         private void GenerateConfig(ICoreAPI api, MeteoricExpansionConfig previousConfig)
         {
-            api.StoreModConfig<MeteoricExpansionConfig>(new MeteoricExpansionConfig(previousConfig), "MeteoricExpansionConfig.json");
+            api.StoreModConfig(new MeteoricExpansionConfig(previousConfig), configFile);
         }
     }
 }

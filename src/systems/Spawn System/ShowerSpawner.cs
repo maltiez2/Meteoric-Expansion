@@ -110,6 +110,27 @@ namespace MeteoricExpansion.Systems
             }
         }
 
+        public void TestSpawn()
+        {
+            MeteorCode = GetRandomEntityCode();
+            ShowerTranslation = DetermineTranslation();
+
+            int numShowerMeteors = SpawnerRand.Next(0, ServerAPI.World.Config.GetInt("MaxMeteorsPerShower"));
+            int showerTime = SpawnerRand.Next(ServerAPI.World.Config.GetInt("MinimumShowerDurationInMinutes"), ServerAPI.World.Config.GetInt("MaximumShowerDurationInMinutes"));
+
+            UnregisterShowerCallbacks();
+
+            ShowerCallbacks = new long[numShowerMeteors];
+            for (int i = 0; i < numShowerMeteors; i++)
+            {
+                double offsetTime = 0; // SpawnerRand.NextDouble();
+
+                TimeSpan interval = TimeSpan.FromMinutes(SpawnerRand.Next(0, showerTime) + offsetTime);
+
+                ShowerCallbacks[i] = ServerAPI.Event.RegisterCallback(SpawnShowerMeteor, (int)interval.TotalMilliseconds);
+            }
+        }
+
         private void UnregisterShowerCallbacks()
         {
             if (ShowerCallbacks != null)

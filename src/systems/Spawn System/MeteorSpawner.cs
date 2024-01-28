@@ -64,16 +64,7 @@ namespace MeteoricExpansion.Systems
                 //-- This was moved out of the base class. For some reason the renderer wasn't being applied when inside it. --//
                 if (ServerAPI.World.AllOnlinePlayers.Length > 0)
                 {
-                    int playerToSpawnOn = SpawnNearPlayer();
-
-                    EntityProperties entityType = ServerAPI.World.GetEntityType(new AssetLocation("meteoricexpansion", GetRandomEntityCode()));
-                    EntityFallingMeteor entity = (EntityFallingMeteor)ServerAPI.World.ClassRegistry.CreateEntity(entityType);
-                    EntityPos entityPos = new EntityPos(ServerAPI.World.AllOnlinePlayers[playerToSpawnOn].Entity.ServerPos.X + GetSpawnOffset(), ServerAPI.WorldManager.MapSizeY - 10, ServerAPI.World.AllOnlinePlayers[playerToSpawnOn].Entity.ServerPos.Z + GetSpawnOffset());
-
-                    entity.ServerPos.SetPos(entityPos);
-                    entity.Pos.SetFrom(entity.ServerPos);
-
-                    ServerAPI.World.SpawnEntity(entity);
+                    SpawnMeteor();
                 }
 
                 NextSpawn = SpawnerRand.Next(MinSpawnTime, MaxSpawnTime) + SpawnerRand.NextDouble();
@@ -82,5 +73,21 @@ namespace MeteoricExpansion.Systems
                 TimeSinceSpawn = this.ServerAPI.World.ElapsedMilliseconds;
             }
         }
+
+        private void SpawnMeteor()
+        {
+            int playerToSpawnOn = SpawnNearPlayer();
+
+            EntityProperties entityType = ServerAPI.World.GetEntityType(new AssetLocation("meteoricexpansion", GetRandomEntityCode()));
+            EntityFallingMeteor entity = (EntityFallingMeteor)ServerAPI.World.ClassRegistry.CreateEntity(entityType);
+            EntityPos entityPos = new EntityPos(ServerAPI.World.AllOnlinePlayers[playerToSpawnOn].Entity.ServerPos.X + GetSpawnOffset(), ServerAPI.WorldManager.MapSizeY - 10, ServerAPI.World.AllOnlinePlayers[playerToSpawnOn].Entity.ServerPos.Z + GetSpawnOffset());
+
+            entity.ServerPos.SetPos(entityPos);
+            entity.Pos.SetFrom(entity.ServerPos);
+
+            ServerAPI.World.SpawnEntity(entity);
+        }
+
+        public void TestSpawn() => SpawnMeteor();
     }
 }

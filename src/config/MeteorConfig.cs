@@ -1,4 +1,6 @@
-﻿namespace MeteoricExpansion
+﻿using ImGuiNET;
+
+namespace MeteoricExpansion
 {
     class MeteoricExpansionConfig
     {
@@ -40,7 +42,12 @@
         {
 
         }
-        public MeteoricExpansionConfig(MeteoricExpansionConfig previousConfig) 
+        public MeteoricExpansionConfig(MeteoricExpansionConfig previousConfig)
+        {
+            SetFrom(previousConfig);
+        }
+
+        private void SetFrom(MeteoricExpansionConfig previousConfig)
         {
             //-- The following options affect falling meteors --//
             DisableFallingMeteors = previousConfig.DisableFallingMeteors;
@@ -75,6 +82,73 @@
             MinimumShowerDurationInMinutes = previousConfig.MinimumShowerDurationInMinutes;
             MaximumShowerDurationInMinutes = previousConfig.MaximumShowerDurationInMinutes;
             MaxMeteorsPerShower = previousConfig.MaxMeteorsPerShower;
+        }
+
+        public void Edit(string id)
+        {
+            if (ImGui.Button($"Reset all settings##{id}")) SetFrom(new());
+
+            ImGui.SeparatorText("Settings");
+
+            ImGui.PushItemWidth(200);
+            
+            ImGui.Text("The Following Options Affect Falling Meteors");
+            
+            ImGui.Checkbox($"Disable falling meteors##{id}", ref DisableFallingMeteors);
+            ImGui.Checkbox($"Destructive##{id}", ref Destructive);
+            DrawHint("Destructive determines whether meteor strikes damage the world. If set to true, meteorites will cause craters, destroy structures, toss inventory contents across the ground, etc");
+            
+            ImGui.Checkbox($"Claims protected##{id}", ref ClaimsProtected);
+            DrawHint("If claims have been set for your base, then setting this to true will protect any blocks within the claim from being destroyed. This works for traders, too");
+            
+            ImGui.InputDouble($"FallingMeteorSize##{id}", ref FallingMeteorSize);
+            ImGui.DragIntRange2($"MeteorHorizontalSpeed##{id}", ref MinimumMeteorHorizontalSpeed, ref MaximumMeteorHorizontalSpeed);
+            ImGui.DragIntRange2($"MeteorVerticalSpeed##{id}", ref MinimumMeteorVerticalSpeed, ref MaximumMeteorVerticalSpeed);
+            ImGui.DragIntRange2($"MinutesBetweenMeteorSpawns##{id}", ref MinimumMinutesBetweenMeteorSpawns, ref MaximumMinutesBetweenMeteorSpawns);
+            DrawHint("Amount of time, in minutes, between meteor spawns. Timer restarts at the start of each game session or when the server has been restarted.");
+
+            ImGui.DragIntRange2($"SpawnDistanceInChunks##{id}", ref MinimumSpawnDistanceInChunks, ref MaximumSpawnDistanceInChunks);
+            DrawHint("Determines the range that a meteor will spawn from the player. Y distance is always worldheight - 10");
+
+            ImGui.DragIntRange2($"MeteorLifespanInSeconds##{id}", ref MinimumMeteorLifespanInSeconds, ref MaximumMeteorLifespanInSeconds);
+            DrawHint("Determines the amount of time, in seconds, that a meteor can live before exploding.");
+
+            ImGui.DragIntRange2($"CraterSmoulderTimeInMinutes##{id}", ref MinimumCraterSmoulderTimeInMinutes, ref MaximumCraterSmoulderTimeInMinutes);
+
+            DrawHint("A smouldering rock will only cool if it has existed after this number of minutes");
+            DrawHint("A smouldering rock will cool before it has existed for this amount of minutes");
+            
+            ImGui.InputDouble($"CraterSizeMultiplier##{id}", ref CraterSizeMultiplier);
+            
+            
+            ImGui.NewLine();
+            ImGui.Text("The Following Options Affect Meteor Showers");
+
+            ImGui.DragIntRange2($"ShowerHorizontalSpeed##{id}", ref MinimumShowerHorizontalSpeed, ref MaximumShowerHorizontalSpeed);
+            ImGui.DragIntRange2($"ShowerVerticalSpeed##{id}", ref MinimumShowerVerticalSpeed, ref MaximumShowerVerticalSpeed);
+            ImGui.DragIntRange2($"MinutesBetweenShowers##{id}", ref MinimumMinutesBetweenShowers, ref MaximumMinutesBetweenShowers);
+            ImGui.DragIntRange2($"ShowerSpawnDistanceInChunks##{id}", ref MinimumShowerSpawnDistanceInChunks, ref MaximumShowerSpawnDistanceInChunks);
+            ImGui.DragIntRange2($"ShowerDurationInMinutes##{id}", ref MinimumShowerDurationInMinutes, ref MaximumShowerDurationInMinutes);
+
+            ImGui.DragInt($"MaxMeteorsPerShower##{id}", ref MaxMeteorsPerShower);
+
+            ImGui.PopItemWidth();
+        }
+
+        private static void DrawHint(string hint)
+        {
+            if (hint == null) return;
+
+            ImGui.SameLine();
+            ImGui.TextDisabled("(?)");
+            if (ImGui.BeginItemTooltip())
+            {
+                ImGui.PushTextWrapPos(ImGui.GetFontSize() * 35f);
+                ImGui.TextUnformatted(hint);
+                ImGui.PopTextWrapPos();
+
+                ImGui.EndTooltip();
+            }
         }
     }
 }

@@ -14,24 +14,36 @@
     <IntermediateOutputPath>..\..\obj\Release\meteoricexpansion\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="configlib">
+      <HintPath>..\Firearms\configlib\Releases\configlib\configlib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ImGui.NET">
+      <HintPath>..\Firearms\VSImGui\Releases\vsimgui\ImGui.NET.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="VintagestoryAPI">
-      <HintPath>$(VINTAGE_STORY)/VintagestoryAPI.dll</HintPath>
+      <HintPath>D:/Projects/Firearms/game_19/VintagestoryAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VSImGui">
+      <HintPath>..\Firearms\VSImGui\Releases\vsimgui\VSImGui.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VSSurvivalMod">
-      <HintPath>$(VINTAGE_STORY)/Mods/VSSurvivalMod.dll</HintPath>
+      <HintPath>D:/Projects/Firearms/game_19/Mods/VSSurvivalMod.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VSEssentials">
-      <HintPath>$(VINTAGE_STORY)/Mods/VSEssentials.dll</HintPath>
+      <HintPath>D:/Projects/Firearms/game_19/Mods/VSEssentials.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VSCreativeMod">
-      <HintPath>$(VINTAGE_STORY)/Mods/VSCreativeMod.dll</HintPath>
+      <HintPath>D:/Projects/Firearms/game_19/Mods/VSCreativeMod.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>$(VINTAGE_STORY)/Lib/Newtonsoft.Json.dll</HintPath>
+      <HintPath>D:/Projects/Firearms/game_19/Lib/Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
