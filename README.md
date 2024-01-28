@@ -1,4 +1,4 @@
-## Meteoric Expansion
+## Meteoric Expansion (Config lib compatibility)
 
 The skies burn with balls of fire barrelling towards the planet at cosmic speeds....Is this the apocalypse?
 
